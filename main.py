@@ -2,6 +2,7 @@ from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
+from enum import Enum
 
 app = FastAPI()
 
@@ -17,14 +18,20 @@ class Carrier(BaseModel):
     name: str
     trucks_per_day: int
 
+class Cities(Enum):
+    NY = "New York"
+    WA = 'Washington DC'
+    SF = 'San Francisco'
+    LA = 'Los Angeles'
+
 
 ROUTES = {
-    ("New York", "Washington DC"): [
+    (Cities.NY.value, Cities.WA.value): [
         Carrier(name="Knight-Swift Transport Services", trucks_per_day=10),
         Carrier(name='J.B. Hunt Transport Services Inc', trucks_per_day=7),
         Carrier(name='YRC Worldwide', trucks_per_day=5)
     ],
-    ('San Francisco', 'Los Angeles'): [
+    (Cities.SF.value, Cities.LA.value): [
         Carrier(name="XPO Logistics", trucks_per_day=9),
         Carrier(name="Schneider", trucks_per_day=6),
         Carrier(name="Landstar Systems", trucks_per_day=2),
